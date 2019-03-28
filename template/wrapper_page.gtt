@@ -1,0 +1,132 @@
+[% WRAPPER Page() %]
+[% opts := OptionsFromContext(ctx) %]
+<!doctype html> [% %]
+<html lang="en"> [% %]
+<head> [% %]
+    <meta charset="utf-8"> [% %]
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> [% %]
+
+    [% IF opts.Title != "" %]
+        <title>[% opts.Title | html %]</title> [% %]
+    [% END %]
+
+    [% IF !opts.DisableStdStatic %]
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> [% %]
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous"> [% %]
+    [% END %]
+
+    [% opts.HeadContent %]
+</head> [% %]
+
+<body> [% %]
+
+<nav class="navbar
+            [% IF !opts.NavBar.DisableExpandSm +%] navbar-expand-sm [% END %]
+            [% IF opts.NavBar.Classes == nil +%] navbar-dark bg-dark [% ELSE %]
+              [% FOR class IN opts.NavBar.Classes +%] [%+ class | html +%] [%+ %][% END %]
+            [% END %]
+        "> [% %]
+    [% IF opts.NavBar.Brand != "" || opts.NavBar.BrandImageSrc != "" %]
+        [% IF opts.NavBar.BrandLink != "" %]
+            <a class="navbar-brand" href="[% opts.NavBar.BrandLink | html %]">
+        [% ELSE %]
+            <div class="navbar-brand"> [% %]
+        [% END %]
+
+        [% IF opts.NavBar.BrandImageSrc != "" %]<img src="[% opts.NavBar.BrandImageSrc | html %]">[% END %]
+        [% opts.NavBar.Brand | html %]
+
+        [% IF opts.NavBar.BrandLink != "" %]
+            </a>
+        [% ELSE %]
+            </div>
+        [% END %]
+    [% END %]
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> [% %]
+        <span class="navbar-toggler-icon"></span> [% %]
+    </button> [% %]
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent"> [% %]
+        <ul class="navbar-nav mr-auto"> [% %]
+            [% nav := getNav(ctx) %] [% %]
+            [% FOR item IN nav.Top %] [% %]
+            <li class="nav-item [% IF item.IsActive +%] active[% END %]"> [% %]
+                <a class="nav-link" href="[% item.Link | html %]">[% item.Caption | html %]</a> [% %]
+            </li> [% %]
+            [% END %]
+        </ul> [% %]
+
+        [% IF opts.NavBar.Auth.Enabled %]
+        <div class="navbar-nav"> [% %]
+            [% IF opts.NavBar.Auth.CurUser != "" %]
+            <span class="navbar-text">
+                [% opts.NavBar.Auth.CurUser | html %]&nbsp;
+                &nbsp;<a href="[% opts.NavBar.Auth.LogoutHref | html %]"><i class="fas fa-sign-out-alt"></i></a>
+            </span>
+            [% ELSE %]
+                <a href="[% opts.NavBar.Auth.LoginHref | html %]" class="nav-link">
+                    [% opts.NavBar.Auth.LoginLabel | html %]
+                    &nbsp;<i class="fas fa-sign-in-alt"></i>
+                </a>
+            [% END %]
+        </div>
+        [% END %]
+    </div> [% %]
+</nav> [% %]
+
+<div class="container-fluid"> [% %]
+    <div class="row d-flex"> [% %]
+        [% hasLeftNav := len(nav.Left) > 0 %]
+        [% IF hasLeftNav %]
+        <div class="rltcs-nav col-sm-12 col-md-2"> [% %]
+            <ul class="nav flex-column"> [% %]
+                [% FOR item IN nav.Left %]
+                <li class="nav-item"> [% %]
+                    <a class="nav-link [% IF item.IsActive +%] active [% END %]" [% %]
+                       href="[% item.Link | html %]" [% %]
+                       [% IF item.OpenInNewPage +%] target="_blank" [% END %]
+                    >[% item.Caption | html %]
+                        [% IF item.OpenInNewPage +%]
+                        <small>&#x1f517;</small>
+                        [% END %]
+                    </a>
+
+                    [% IF item.IsActive %]
+                    <ul class="nav nav-sub flex-column"> [% %]
+                        [% FOR item IN item.SubItems %]
+                        <li class="nav-item"> [% %]
+                            <a class="nav-link [% IF item.IsActive +%] active [% END %]" [% %]
+                               href="[% item.Link | html %]" [% %]
+                               [% IF item.OpenInNewPage +%] target="_blank" [% END %]
+                            >[% item.Caption | html %]
+                                [% IF item.OpenInNewPage +%]
+                                <small>&#x1f517;</small>
+                                [% END %]
+                            </a> [% %]
+                        </li> [% %]
+                        [% END %]
+                    </ul>
+                    [% END %]
+                </li>
+                [% END %]
+            </ul> [% %]
+        </div>
+        [% END %]
+        <div class="[% IF hasLeftNav +%] col-sm-12 col-md-10 [% ELSE +%] col-12[% END %]">
+            [% CONTENT %]
+        </div> [% %]
+    </div> [% %]
+</div> [% %]
+
+[% IF !opts.DisableStdStatic %]
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> [% %]
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script> [% %]
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script> [% %]
+[% END %]
+
+[% opts.EndBodyContent %]
+
+</body> [% %]
+</html>
+[% END %]

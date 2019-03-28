@@ -1,0 +1,26 @@
+[% TEMPLATE Input(f *Input) %]
+[% IF f.Type == "hidden" %]
+<input name="[% f.Name | html %]" [%+ %]
+       type="[% f.Type | html %]" [%+ %]
+       value="[% f.GetStringValue() | html %]" [% %]
+>
+[% ELSE %]
+<div class="form-group">[% %]
+    <label for="input[% f.Name | html %]">[% f.Label | html %]</label>[% %]
+    <input name="[% f.Name | html %]" [%+ %]
+           type="[% f.Type | html %]" [%+ %]
+           value="[% f.GetStringValue() | html %]" [%+ %]
+           class="form-control
+                  [% IF f.err != nil +%] is-invalid [% END %]
+                  [% FOR c IN f.Class +%] [%+ c | html %] [% END %]
+                 " [%+ %]
+           id="input[% f.Name | html %]"
+           [% IF f.Required +%] required [% END %]
+           [% IF f.Placeholder != "" +%] placeholder="[% f.Placeholder | html %]" [% END %]
+    >
+    [% IF f.err != nil +%]
+    <div class="invalid-feedback">[% f.err.PublicError() | html %]</div>
+    [% END %]
+</div>
+[% END %]
+[% END %]

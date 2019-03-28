@@ -1,0 +1,18 @@
+[% TEMPLATE Textarea(f *Textarea) %]
+<div class="form-group">[% %]
+    <label for="textarea[% f.Name | html %]">[% f.Label | html %]</label>[% %]
+    <textarea name="[% f.Name | html %]" [%+ %]
+           class="form-control
+                  [% IF f.err != nil +%] is-invalid [% END %]
+                  [% FOR c IN f.Class +%] [%+ c | html %] [% END %]
+                 " [%+ %]
+           id="textarea[% f.Name | html %]"
+           [% IF f.Required +%] required [% END %]
+           [% IF f.Rows != 0 +%] rows="[% f.Rows %]" [% END %]
+           [% IF f.Cols != 0 +%] cols="[% f.Cols %]" [% END %]
+    >[% f.GetStringValue() | html %]</textarea>
+    [% IF f.err != nil +%]
+    <div class="invalid-feedback">[% f.err.PublicError() | html %]</div>
+    [% END %]
+</div>
+[% END %]

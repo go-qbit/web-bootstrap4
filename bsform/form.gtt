@@ -1,0 +1,45 @@
+[% IMPORT (
+    "github.com/go-qbit/web-bootstrap4/template"
+    "github.com/go-qbit/web/form"
+) %]
+
+[% TEMPLATE Form(f *form.Form) %]
+<form method="post"> [% %]
+    [% caption := f.GetCaption(ctx) %]
+    [% IF caption != "" %]
+    <h1 class="h3 mb-3">[% caption | html %]</h1>
+    [% END %]
+
+    [% IF f.LastError != nil %]
+    <div class="alert alert-danger">[% f.LastError.PublicError() %]</div>
+    [% END %]
+
+    <input type="hidden" name="[% form.AntiCSRFInputName %]" value="[% f.GetAntiCSRFToken(ctx) %]">
+
+    [% FOR field IN f.GetFields() %]
+    [% PROCESS field.Html() %]
+    [% END %]
+
+    <button type="submit" class="btn btn-primary btn-block">[% f.GetSubmitCaption(ctx) | html %]</button> [% %]
+</form> [% %]
+[% END %]
+
+[% WRAPPER FormWrapper() %]
+<div class="container pt-4"> [% %]
+    <div class="row"> [% %]
+        <div class="col-8 offset-2"> [% %]
+            <div class="card card-body"> [% %]
+                [% CONTENT %]
+            </div> [% %]
+        </div> [% %]
+    </div> [% %]
+</div>
+[% END %]
+
+[% TEMPLATE WrappedForm(f *form.Form) USE WRAPPER FormWrapper() %]
+    [% PROCESS Form(f) %]
+[% END %]
+
+[% TEMPLATE PageForm(f *form.Form) USE WRAPPER template.Page() %]
+    [% PROCESS WrappedForm(f) %]
+[% END %]
