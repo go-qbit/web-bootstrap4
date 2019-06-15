@@ -28,6 +28,7 @@ type PageOptions struct {
 	RootHandler handler.IHandler
 
 	DisableStdStatic bool
+	Lang             string
 	Title            string
 	HeadContent      string
 	NavBar           PONavBar

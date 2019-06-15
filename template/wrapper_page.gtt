@@ -1,7 +1,7 @@
 [% WRAPPER Page() %]
 [% opts := OptionsFromContext(ctx) %]
 <!doctype html> [% %]
-<html lang="en"> [% %]
+<html [% IF opts.Lang != "" +%] lang="[% opts.Lang | html %]"[% END %]> [% %]
 <head> [% %]
     <meta charset="utf-8"> [% %]
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> [% %]
