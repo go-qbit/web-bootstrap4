@@ -48,7 +48,7 @@ func (f *Textarea) GetStringValue() string {
 }
 
 func (f *Textarea) Check(ctx context.Context) qerror.PublicError {
-	if f.GetStringValue() == "" {
+	if f.Required && f.GetStringValue() == "" {
 		return field.ErrMissedReqField(ctx)
 	}
 

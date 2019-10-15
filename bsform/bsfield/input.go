@@ -48,7 +48,7 @@ func (f *Input) GetStringValue() string {
 }
 
 func (f *Input) Check(ctx context.Context) qerror.PublicError {
-	if f.GetStringValue() == "" {
+	if f.Required && f.GetStringValue() == "" {
 		return field.ErrMissedReqField(ctx)
 	}
 
