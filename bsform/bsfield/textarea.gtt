@@ -10,6 +10,7 @@
            [% IF f.Required +%] required [% END %]
            [% IF f.Rows != 0 +%] rows="[% f.Rows %]" [% END %]
            [% IF f.Cols != 0 +%] cols="[% f.Cols %]" [% END %]
+           [% IF f.Placeholder != "" +%] placeholder="[% f.Placeholder | html %]" [% END %]
     >[% f.GetStringValue() | html %]</textarea>
     [% IF f.err != nil +%]
     <div class="invalid-feedback">[% f.err.PublicError() | html %]</div>

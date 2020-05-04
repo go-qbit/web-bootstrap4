@@ -12,6 +12,7 @@ var (
 	sff24cefccfd522736f023ae6853a627b = []byte{0x20}
 	s07ee07e92982b144841401dde13bd593 = []byte{0x20, 0x63, 0x6F, 0x6C, 0x73, 0x3D, 0x22}
 	sc3aba125ac72e2e682869214b34b5c45 = []byte{0x20, 0x69, 0x73, 0x2D, 0x69, 0x6E, 0x76, 0x61, 0x6C, 0x69, 0x64}
+	s811a86d9b13c71b7939160306eabfe71 = []byte{0x20, 0x70, 0x6C, 0x61, 0x63, 0x65, 0x68, 0x6F, 0x6C, 0x64, 0x65, 0x72, 0x3D, 0x22}
 	scb71245e14a4939cee49dc5a64a5fb22 = []byte{0x20, 0x72, 0x65, 0x71, 0x75, 0x69, 0x72, 0x65, 0x64}
 	s6051883f74b7d501f668195b40e032ab = []byte{0x20, 0x72, 0x6F, 0x77, 0x73, 0x3D, 0x22}
 	s117d1b1c4347f044b5709e4c8911f6d3 = []byte{0x3C, 0x2F, 0x64, 0x69, 0x76, 0x3E}
@@ -61,6 +62,11 @@ func ProcessTextarea(ctx context.Context, w io.Writer, f *Textarea) {
 	if f.Cols != 0 {
 		w.Write(s07ee07e92982b144841401dde13bd593)
 		io.WriteString(w, utils.ToString(f.Cols))
+		w.Write(sba2bb2aa9962eca5bbc5a8686da73b75)
+	}
+	if f.Placeholder != "" {
+		w.Write(s811a86d9b13c71b7939160306eabfe71)
+		io.WriteString(w, filter.Filterhtml(f.Placeholder))
 		w.Write(sba2bb2aa9962eca5bbc5a8686da73b75)
 	}
 	w.Write(sc2ed64c970bacda7be04701c4d3ae36a)

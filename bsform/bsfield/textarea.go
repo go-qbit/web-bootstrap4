@@ -13,16 +13,17 @@ import (
 var _ field.IField = &Textarea{}
 
 type Textarea struct {
-	Name      string
-	Label     string
-	Required  bool
-	Default   string
-	Rows      uint16
-	Cols      uint16
-	Class     []string
-	CheckFunc func(ctx context.Context, value string) qerror.PublicError
-	value     *string
-	err       qerror.PublicError
+	Name        string
+	Label       string
+	Required    bool
+	Default     string
+	Rows        uint16
+	Cols        uint16
+	Placeholder string
+	Class       []string
+	CheckFunc   func(ctx context.Context, value string) qerror.PublicError
+	value       *string
+	err         qerror.PublicError
 }
 
 func (f *Textarea) Init(ctx context.Context, form url.Values) {
